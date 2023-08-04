@@ -1,13 +1,16 @@
 #cau 1
 DELIMITER $$
-CREATE PROCEDURE TongDoanhThuNam1997
+CREATE DEFINER=`root`@`localhost` FUNCTION `TongDoanhThuNam2020`() RETURNS int(11)
 BEGIN
-    SELECT SUM(CT.SoLuong * MH.DonGia * (1 - CT.GiamGia)) AS TongDoanhThu
-    FROM DonDatHang DDH
-    JOIN ChiTietDDH CT ON DDH.MaDDH = CT.MaDDH
-    JOIN MatHang MH ON CT.MaMH = MH.MaMH
-    WHERE DATEPART(YEAR, DDH.NgayDH) = 1997;
-END;$$
+	DECLARE TDT2020 INT;
+    SELECT SUM(ChiTietDDH.SoLuong * MatHang.DonGia) INTO TDT2020
+    FROM DonDatHang
+    JOIN ChiTietDDH ON DonDatHang.MaDDH = ChiTietDDH.MaDDH
+    JOIN MatHang ON ChiTietDDH.MaMH = MatHang.MaMH
+    WHERE YEAR(DonDatHang.NgayDH) = 2020;
+    RETURN TDT2020;
+END$$
+DELIMITER ;
 
 #cau 2
 DELIMITER $$
